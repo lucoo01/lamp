@@ -1,8 +1,19 @@
 FROM tutum/lamp:latest
-#RUN rm -fr /app && git clone https://github.com/lucoo01/think.git /app
+RUN apt-get update
+
+RUN apt-get -y install curl
+RUN apt-get -y install wget
+RUN apt-get -y install vim
+
+# 配置vim
+ADD .vimrc ~/.vimrc
+
 RUN rm -rf /app && mkdir /app
-# 让容器访问宿主机上的目录
-RUN ls -al /etc/alternatives/php
+RUN rm -rf /etc/apache2/sites-available/000-default.conf
+
+# 添加自己的配置文件
+ADD 000-default.conf /etc/apache2/sites-available/000-default.conf
+
 
 VOLUME ["/app"]
 EXPOSE 80 3306
